@@ -1,16 +1,18 @@
 package com.sevak_avet.GUI;
 
-import com.sevak_avet.Cryption.DecryptionCezar;
-import com.sevak_avet.Cryption.EncryptCezar;
-
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+
+import com.sevak_avet.Cryption.DecryptionCezar;
+import com.sevak_avet.Cryption.EncryptCezar;
 
 public class AbstractFrame extends Application {
 	private static Scene scene;
@@ -53,38 +55,74 @@ public class AbstractFrame extends Application {
 		textAreaOutput.setMaxWidth(380);
 		textAreaOutput.setEditable(false);
 		root.getChildren().add(textAreaOutput);
-		
+
 		stage.setScene(scene);
 	}
 
 	public static EventHandler<MouseEvent> encryptHandler = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent e) {
-			EncryptCezar enc = new EncryptCezar(textAreaInput.getText(), 7);
-			textAreaOutput.setText(enc.getEncText());
+			encrypt();
 		}
 	};
 
-	public static EventHandler<MouseEvent> decryptHandler = new EventHandler<MouseEvent>(){
+	public static EventHandler<MouseEvent> decryptHandler = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent e) {
-			DecryptionCezar dec = new DecryptionCezar(textAreaInput.getText(), 7);
-			textAreaOutput.setText(dec.getDecText());
+			decrypt();
 		}
 	};
-	
+
 	private static EventHandler<MouseEvent> clearAllHandler = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent arg0) {
-			textAreaInput.setText("");
-			textAreaOutput.setText("");			
+			textAreaInput.clear();
+			textAreaOutput.clear();
 		}
 	};
-	
-	public static Button getBtn(){
+
+	public static EventHandler<KeyEvent> encryptKey = new EventHandler<KeyEvent>() {
+
+		@Override
+		public void handle(KeyEvent e) {
+			if (e.getCode() == KeyCode.ENTER && e.isShiftDown()) {
+				textAreaInput.setWrapText(true);
+				System.out.println("SHIFT + ENTER");
+			}
+			
+			if(e.getCode() == KeyCode.ENTER) {
+				encrypt();
+			}
+		}
+	};
+
+	public static EventHandler<KeyEvent> decryptKey = new EventHandler<KeyEvent>() {
+
+		@Override
+		public void handle(KeyEvent e) {
+			if (e.getCode() == KeyCode.ENTER) {
+				decrypt();
+			}
+		}
+	};
+
+	private static void encrypt() {
+		EncryptCezar enc = new EncryptCezar(textAreaInput.getText(), 7);
+		textAreaOutput.setText(enc.getEncText());
+	}
+
+	private static void decrypt() {
+		DecryptionCezar dec = new DecryptionCezar(textAreaInput.getText(), 7);
+		textAreaOutput.setText(dec.getDecText());
+	}
+
+	public static Button getBtn() {
 		return btn;
 	}
-	
+
+	public static Scene getScene() {
+		return scene;
+	}
 
 	@Override
 	public void start(Stage arg0) throws Exception {

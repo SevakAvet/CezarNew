@@ -8,6 +8,8 @@ public class DecFrame extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		AbstractFrame.init(stage, FRAME.BUTTON_DECRYPT.getText());
+		AbstractFrame.getScene().setOnKeyReleased(AbstractFrame.decryptKey);
+		
 		Button btn = AbstractFrame.getBtn();
 		btn.setOnMouseClicked(AbstractFrame.decryptHandler);
 

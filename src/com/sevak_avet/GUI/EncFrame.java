@@ -9,6 +9,8 @@ public class EncFrame extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		AbstractFrame.init(stage, FRAME.BUTTON_ENCRYPT.getText());
+		AbstractFrame.getScene().setOnKeyReleased(AbstractFrame.encryptKey);
+		
 		Button btn = AbstractFrame.getBtn();
 		btn.setOnMouseClicked(AbstractFrame.encryptHandler);
 
